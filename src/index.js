@@ -1,60 +1,19 @@
-//fetch does not work with new Promise because fetch already returns a promise.
-//this is how to use it with .then and .catch
-
-// function getBible(URL) {
-//   return fetch(URL).then((response) => {
-//     if (response.ok) {
-//       return response.json();
-//     } else {
-//       throw Error(response.status);
-//     }
-//   });
-// }
-
-// getBible(URL)
-//   .then((response) => {
-//     console.log(response);
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
-
-//returns {verse: '1', text: 'In the beginning God created the heavens and the earth.'} which you can use in the then section with response.verse or response.text
-
-//Down below is the example using async await. You can either assign it to outer variable by calling await in the beginning of the outer variable assignment or down below
-// let x;
-
-// async function getBible(url) {
-//   try {
-//     const response = await fetch(url);
-//     const data = await response.json();
-//     return data;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
-// x = await getBible(URL);
-// console.log(x);
-
-//you can call the main function inside the async function to be called later
-
-// function log(x) {
-//   console.log(x);
-// }
-
-// async function getBible(url) {
-//   try {
-//     const response = await fetch(url);
-//     const data = await response.json();
-//     log(data);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
-// getBible(URL);
 import "./style.css";
+import {
+  submitButton,
+  toggleBtn,
+  createWeatherDom,
+  clearWeatherCard,
+} from "./handleDom.js";
+import * as tempHandler from "./helperFunction.js";
+
+let weatherData = {};
+
+function logWeatherData() {
+  console.log(weatherData);
+}
+
+globalThis.logWeatherData = logWeatherData;
 
 const apiKey = "G3WLXSKUZVJETRD27KXB5QR44"; //Please no steal :(
 
@@ -64,8 +23,78 @@ async function getWeatherData(city) {
   );
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   const data = await response.json();
-  const weatherInFahrenheit = data.currentConditions.temp;
-  console.log(weatherInFahrenheit);
+  return data;
 }
 
-globalThis.getWeatherData = getWeatherData;
+function processWeatherData(weatherData) {
+  const data = weatherData;
+  const address = data.address;
+  const description = data.description;
+  const temp = data.currentConditions.temp;
+  const feelsLike = data.currentConditions.feelslike;
+  const isFahrenheit = true;
+  return {
+    address,
+    description,
+    temp,
+    feelsLike,
+    isFahrenheit,
+  };
+}
+
+function storeData(data) {
+  weatherData = data;
+}
+
+// submitButton.addEventListener("click", async (e) => {
+//   try {
+//     e.preventDefault();
+//     const inputValue = document.getElementById("city").value;
+//     const data = await getWeatherData(inputValue);
+//     let processed = processWeatherData(data);
+//     console.log(processed);
+//     createWeatherDom(processed);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
+
+// submitButton.addEventListener("click", async (e) => {
+//   try {
+//     e.preventDefault();
+//     const inputValue = document.getElementById("city").value;
+//     const data = await getWeatherData(inputValue);
+//     let processed = processWeatherData(data);
+//     storeData(processed);
+//     createWeatherDom(processed);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
+
+submitButton.addEventListener("click", async (e) => {
+  if (Object.keys(weatherData).length === 0) {
+    try {
+      e.preventDefault();
+      const inputValue = document.getElementById("city").value;
+      const data = await getWeatherData(inputValue);
+      let processed = processWeatherData(data);
+      storeData(processed);
+      createWeatherDom(processed);
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    clearWeatherCard();
+    try {
+      e.preventDefault();
+      const inputValue = document.getElementById("city").value;
+      const data = await getWeatherData(inputValue);
+      let processed = processWeatherData(data);
+      storeData(processed);
+      createWeatherDom(processed);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+});
