@@ -98,3 +98,35 @@ submitButton.addEventListener("click", async (e) => {
     }
   }
 });
+
+toggleBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  if (Object.keys(weatherData).length !== 0) {
+    if (weatherData.isFahrenheit) {
+      clearWeatherCard();
+      weatherData.temp = tempHandler.toggleTemp(
+        weatherData.isFahrenheit,
+        weatherData.temp,
+      );
+      weatherData.feelsLike = tempHandler.toggleTemp(
+        weatherData.isFahrenheit,
+        weatherData.feelsLike,
+      );
+      weatherData.isFahrenheit = false;
+      createWeatherDom(weatherData);
+    } else {
+      clearWeatherCard();
+      weatherData.temp = tempHandler.toggleTemp(
+        weatherData.isFahrenheit,
+        weatherData.temp,
+      );
+      weatherData.feelsLike = tempHandler.toggleTemp(
+        weatherData.isFahrenheit,
+        weatherData.feelsLike,
+      );
+      weatherData.isFahrenheit = true;
+      createWeatherDom(weatherData);
+    }
+  }
+});
