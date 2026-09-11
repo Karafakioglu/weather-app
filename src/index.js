@@ -33,14 +33,12 @@ function processWeatherData(weatherData) {
   const temp = data.currentConditions.temp;
   const feelsLike = data.currentConditions.feelslike;
   const isFahrenheit = true;
-  const isFahrenheitChosen = true;
   return {
     address,
     description,
     temp,
     feelsLike,
     isFahrenheit,
-    isFahrenheitChosen,
   };
 }
 
@@ -67,42 +65,27 @@ submitButton.addEventListener("click", async (e) => {
       const inputValue = document.getElementById("city").value;
       const data = await getWeatherData(inputValue);
       let processed = processWeatherData(data);
-      storeData(processed);
-      createWeatherDom(processed);
+      if (processed.isFahrenheit !== weatherData.isFahrenheit) {
+        changeTempChoice(processed);
+        storeData(processed);
+        createWeatherDom(processed);
+      } else {
+        storeData(processed);
+        createWeatherDom(processed);
+      }
     } catch (error) {
       console.log(error);
     }
   }
 });
 
-// toggleBtn.addEventListener("click", (e) => {
-//   e.preventDefault();
-
-//   if (Object.keys(weatherData).length !== 0) {
-//     clearWeatherCard();
-
-//     weatherData.temp = tempHandler.toggleTemp(
-//       weatherData.isFahrenheit,
-//       weatherData.temp,
-//     );
-//     weatherData.feelsLike = tempHandler.toggleTemp(
-//       weatherData.isFahrenheit,
-//       weatherData.feelsLike,
-//     );
-//     createWeatherDom(weatherData);
-//     weatherData.isFahrenheit = !weatherData.isFahrenheit;
-//   }
-// });
-
 toggleBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
   if (Object.keys(weatherData).length !== 0) {
     clearWeatherCard();
-
     changeTempChoice(weatherData);
     createWeatherDom(weatherData);
-    weatherData.isFahrenheit = !weatherData.isFahrenheit;
   }
 });
 
@@ -115,4 +98,5 @@ function changeTempChoice(weatherData) {
     weatherData.isFahrenheit,
     weatherData.feelsLike,
   );
+  weatherData.isFahrenheit = !weatherData.isFahrenheit;
 }
