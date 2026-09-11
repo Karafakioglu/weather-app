@@ -1,0 +1,24 @@
+p {
+  margin: 0;
+}
+
+#weather-card-div {
+  border: black 1px solid;
+  width: 20rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  border-radius: 50%;
+  border: 5px solid;
+  border-color: black black red red;
+}

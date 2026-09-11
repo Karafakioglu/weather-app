@@ -4,6 +4,8 @@ import {
   toggleBtn,
   createWeatherDom,
   clearWeatherCard,
+  showSpinner,
+  hideSpinner,
 } from "./handleDom.js";
 import * as tempHandler from "./helperFunction.js";
 
@@ -47,6 +49,7 @@ function storeData(data) {
 }
 
 submitButton.addEventListener("click", async (e) => {
+  showSpinner();
   if (Object.keys(weatherData).length === 0) {
     try {
       e.preventDefault();
@@ -57,6 +60,8 @@ submitButton.addEventListener("click", async (e) => {
       createWeatherDom(processed);
     } catch (error) {
       console.log(error);
+    } finally {
+      hideSpinner();
     }
   } else {
     clearWeatherCard();
@@ -75,6 +80,8 @@ submitButton.addEventListener("click", async (e) => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      hideSpinner();
     }
   }
 });
