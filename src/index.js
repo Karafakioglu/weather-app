@@ -33,44 +33,20 @@ function processWeatherData(weatherData) {
   const temp = data.currentConditions.temp;
   const feelsLike = data.currentConditions.feelslike;
   const isFahrenheit = true;
+  const isFahrenheitChosen = true;
   return {
     address,
     description,
     temp,
     feelsLike,
     isFahrenheit,
+    isFahrenheitChosen,
   };
 }
 
 function storeData(data) {
   weatherData = data;
 }
-
-// submitButton.addEventListener("click", async (e) => {
-//   try {
-//     e.preventDefault();
-//     const inputValue = document.getElementById("city").value;
-//     const data = await getWeatherData(inputValue);
-//     let processed = processWeatherData(data);
-//     console.log(processed);
-//     createWeatherDom(processed);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
-
-// submitButton.addEventListener("click", async (e) => {
-//   try {
-//     e.preventDefault();
-//     const inputValue = document.getElementById("city").value;
-//     const data = await getWeatherData(inputValue);
-//     let processed = processWeatherData(data);
-//     storeData(processed);
-//     createWeatherDom(processed);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
 
 submitButton.addEventListener("click", async (e) => {
   if (Object.keys(weatherData).length === 0) {
@@ -99,34 +75,44 @@ submitButton.addEventListener("click", async (e) => {
   }
 });
 
+// toggleBtn.addEventListener("click", (e) => {
+//   e.preventDefault();
+
+//   if (Object.keys(weatherData).length !== 0) {
+//     clearWeatherCard();
+
+//     weatherData.temp = tempHandler.toggleTemp(
+//       weatherData.isFahrenheit,
+//       weatherData.temp,
+//     );
+//     weatherData.feelsLike = tempHandler.toggleTemp(
+//       weatherData.isFahrenheit,
+//       weatherData.feelsLike,
+//     );
+//     createWeatherDom(weatherData);
+//     weatherData.isFahrenheit = !weatherData.isFahrenheit;
+//   }
+// });
+
 toggleBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
   if (Object.keys(weatherData).length !== 0) {
-    if (weatherData.isFahrenheit) {
-      clearWeatherCard();
-      weatherData.temp = tempHandler.toggleTemp(
-        weatherData.isFahrenheit,
-        weatherData.temp,
-      );
-      weatherData.feelsLike = tempHandler.toggleTemp(
-        weatherData.isFahrenheit,
-        weatherData.feelsLike,
-      );
-      weatherData.isFahrenheit = false;
-      createWeatherDom(weatherData);
-    } else {
-      clearWeatherCard();
-      weatherData.temp = tempHandler.toggleTemp(
-        weatherData.isFahrenheit,
-        weatherData.temp,
-      );
-      weatherData.feelsLike = tempHandler.toggleTemp(
-        weatherData.isFahrenheit,
-        weatherData.feelsLike,
-      );
-      weatherData.isFahrenheit = true;
-      createWeatherDom(weatherData);
-    }
+    clearWeatherCard();
+
+    changeTempChoice(weatherData);
+    createWeatherDom(weatherData);
+    weatherData.isFahrenheit = !weatherData.isFahrenheit;
   }
 });
+
+function changeTempChoice(weatherData) {
+  weatherData.temp = tempHandler.toggleTemp(
+    weatherData.isFahrenheit,
+    weatherData.temp,
+  );
+  weatherData.feelsLike = tempHandler.toggleTemp(
+    weatherData.isFahrenheit,
+    weatherData.feelsLike,
+  );
+}
