@@ -4,6 +4,8 @@ A weather forecast app built with vanilla JavaScript. Search for a city and see 
 
 Part of [The Odin Project](https://www.theodinproject.com/lessons/node-path-javascript-weather-app) Full Stack JavaScript path.
 
+[Demo](https://karafakioglu.github.io/weather-app/)
+
 ## Features
 
 - Search weather by city name
